@@ -1,0 +1,55 @@
+.write-wrapper {
+    width: 70%;
+    margin: 50px auto;
+}
+
+.write-wrapper h1 {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.write-box {
+    border: 1px solid #ddd;
+    padding: 30px;
+    border-radius: 10px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.form-group input {
+    height: 40px;
+    padding: 0 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+}
+
+.form-group textarea {
+    height: 300px;
+    resize: none;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+}
+
+.button-area {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.button-area button {
+    width: 100px;
+    height: 40px;
+    border: none;
+    cursor: pointer;
+    border-radius: 3px;
+}

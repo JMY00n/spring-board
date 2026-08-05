@@ -1,0 +1,98 @@
+.wrapper {
+    min-height: 100vh;
+}
+
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    padding: 20px 40px;
+    border-bottom: 1px solid #ddd;
+}
+
+.user-info {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.content {
+    width: 80%;
+    margin: 50px auto;
+}
+
+.board-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+}
+
+.board-table th,
+.board-table td {
+    border-bottom: 1px solid #ddd;
+    padding: 5px;
+}
+
+.board-table th {
+    background-color: #f5f5f6;
+    font-weight: bold;
+}
+
+.board-table tr:hover {
+    background-color: #fafafa;
+}
+
+.board-table th:nth-child(2),
+.board-table td:nth-child(2) {
+    width: 40%;
+    text-align: left;
+}
+
+.board-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.board-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.board-link:visited {
+    color: #7a5af8;
+}
+
+.board-link:hover {
+    text-decoration: underline;
+}
+
+.pagination {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+
+.pagination button {
+    width: 38px;
+    height: 36px;
+    border: none;
+    background: white;
+    cursor: pointer;
+}
+
+.pagination button:hover {
+    background: #f3f4f6;
+}
+
+.pagination .active {
+    background: #2563eb;
+    color: white;
+    font-weight: bold;
+}
