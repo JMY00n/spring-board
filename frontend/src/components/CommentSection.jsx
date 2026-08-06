@@ -12,6 +12,22 @@ function CommentSection({ boardNo, member }) {
         loadComments();
     }, [boardNo]);
 
+    useEffect(() => {
+        if (openMenu === null) return;
+
+        const handleClickOutside = (e) => {
+            if (!e.target.closest(".comment-menu-wrapper")) {
+                setOpenMenu(null);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [openMenu])
+
     // 댓글 불러오기
     const loadComments = async () => {
         const response = await getCommentList(boardNo);
@@ -48,7 +64,6 @@ function CommentSection({ boardNo, member }) {
 
     // 댓글삭제
     const handleDeleteComment = async (commentNo) => {
-
         try {
             await deleteComment(commentNo);
             await loadComments();
@@ -105,33 +120,26 @@ function CommentSection({ boardNo, member }) {
                                     </div>
                                 </div>
                                 <div className="comment-body">
-                                    
                                     <p className="comment-content">
                                         {comment.content}
                                     </p>
 
                                     {member && member.id === comment.writerId && (
-                                        <button
-                                            className="comment-menu-button"
-                                            onClick={() => setOpenMenu(
-                                                openMenu === comment.no ? null : comment.no
-                                            )}
-                                        >
-                                            ⋮
-                                        </button>
-                                    )}
-                                    {openMenu === comment.no && (
-                                        <div className="comment-dropdown">
-                                            <button type="button">
-                                                수정
-                                            </button>
+                                        <div className="comment-menu-wrapper">
                                             <button
-                                                type="button"
-                                                className="delete-menu-item"
-                                                onClick={() => handleDeleteComment(comment.no)}
+                                                className="comment-menu-button"
+                                                onClick={() => setOpenMenu(
+                                                    openMenu === comment.no ? null : comment.no
+                                                )}
                                             >
-                                                삭제
+                                                ⋮
                                             </button>
+                                            {openMenu === comment.no && (
+                                                <div className="comment-dropdown">
+                                                    <button type="button">수정</button>
+                                                    <button type="button" className="delete-menu-item" onClick={() => handleDeleteComment(comment.no)}>삭제</button>
+                                                </div>
+                                            )}
                                         </div>
                                     )}
                                 </div>

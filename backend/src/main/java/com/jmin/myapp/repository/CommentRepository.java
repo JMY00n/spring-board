@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
     List<Comment> findAllByBoardNoOrderByNoAsc(Long boardNo);
+    List<Comment> findByBoardNoOrderByNoDesc(Long boardNo);
+    void deleteAllByBoardNo(Long boardNo);
 }

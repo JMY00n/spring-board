@@ -38,7 +38,7 @@ public class CommentService {
 
     public List<CommentResponse> commentList(Long boardNo) {
         // 레포지토리에서 boardNo으로 같은 boardNo을 가지고 있는 모든 댓글을 찾아서 comments로 반환
-        List<Comment> comments = commentRepository.findAllByBoardNoOrderByNoAsc(boardNo);
+        List<Comment> comments = commentRepository.findByBoardNoOrderByNoDesc(boardNo);
         List<CommentResponse> response = new ArrayList<>();
 
         for (Comment comment : comments) {

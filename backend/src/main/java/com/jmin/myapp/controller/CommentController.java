@@ -42,7 +42,7 @@ public class CommentController {
     }
 
     // 댓글 삭제
-    @DeleteMapping("/{commentNo}")
+    @DeleteMapping("/{commentNo}/comments")
     public ResponseEntity<?> delete (
             @PathVariable Long commentNo,
             HttpSession session

@@ -6,7 +6,9 @@ import com.jmin.myapp.dto.BoardWriteRequest;
 import com.jmin.myapp.entity.Board;
 import com.jmin.myapp.entity.Member;
 import com.jmin.myapp.repository.BoardRepository;
+import com.jmin.myapp.repository.CommentRepository;
 import com.jmin.myapp.repository.MemberRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,7 @@ import java.util.List;
 public class BoardService {
     private final BoardRepository boardRepository;
     private final MemberRepository memberRepository;
+    private final CommentRepository commentRepository;
 
     public void write(BoardWriteRequest request, Member member) {
         Board board = new Board();
@@ -94,6 +97,7 @@ public class BoardService {
         return response;
     }
 
+    @Transactional
     public void delete(Long no, Member member) {
         Board board = findBoard(no);
 
@@ -101,6 +105,7 @@ public class BoardService {
         if (!board.getWriter().equals(member.getId())) {
             throw new RuntimeException("삭제 권한이 없습니다.");
         }
+        commentRepository.deleteAllByBoardNo(no);
         boardRepository.delete(board);
     }
 

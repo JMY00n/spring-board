@@ -35,13 +35,18 @@ function BoardDetailPage() {
         if (!window.confirm("삭제하시겠습니까?")) {
             return;
         }
-
-        await deleteBoard(board.no);
-
-        alert("삭제되었습니다.");
-
+        
+        try{
+            await deleteBoard(board.no);
+            alert("삭제되었습니다.");
+        } catch (e) {
+            if (e.response?.status === 401) {
+                alert("작성자만 삭제가 가능합니다.");
+                return;
+            }
+        }
         navigate("/");
-    }
+    };
 
     if (!board) {
         return <div>게시글 불러오는 중...</div>
@@ -49,7 +54,7 @@ function BoardDetailPage() {
 
     return (
         <div className="detail-wrapper">
-            <h1>게시글 상세</h1>
+            <h1 onClick={() => navigate("/")}>게시글 상세</h1>
 
             <div className="detail-box">
                 <div className="detail-title">
