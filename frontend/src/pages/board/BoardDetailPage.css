@@ -131,3 +131,20 @@
     line-height: 1.6;
     white-space: pre-wrap;
 }
+
+.comment-body {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.comment-content {
+    flex: 1;
+}
+
+.comment-menu-button {
+    border: none;
+    background: none;
+    cursor: pointer;
+    margin-left: 12px;
+}

@@ -32,3 +32,7 @@ export const getCommentList = (boardNo) => {
 export const writeComment = (boardNo, data) => {
     return apiClient.post(`/board/${boardNo}/comments`, data);
 };
+
+export const deleteComment = (commentNo) => {
+    return apiClient.delete(`/board/${commentNo}`);
+}

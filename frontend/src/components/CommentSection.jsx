@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
-import { getCommentList, writeComment } from "../shared/api/boardApi";
+import { getCommentList, writeComment, deleteComment } from "../shared/api/boardApi";
 
 function CommentSection({ boardNo, member }) {
     // 불러오는 댓글 리스트
     const [comments, setComments] = useState([]);
     // 댓글 작성
     const [commentContent, setCommentContent] = useState("");
+    const [openMenu, setOpenMenu] = useState(null);
 
     useEffect(() => {
         loadComments();
@@ -45,6 +46,20 @@ function CommentSection({ boardNo, member }) {
         }
     };
 
+    // 댓글삭제
+    const handleDeleteComment = async (commentNo) => {
+
+        try {
+            await deleteComment(commentNo);
+            await loadComments();
+        } catch (e) {
+            if (e.response?.status === 401) {
+                alert("작성자만 삭제가 가능합니다.");
+                return;
+            }
+        }
+    }
+
     return (
         <section className="comment-section">
             <div className="comment-title-row">
@@ -80,12 +95,46 @@ function CommentSection({ boardNo, member }) {
                                 key={comment.no}
                             >
                                 <div className="comment-header">
-                                    <strong>{comment.writer}</strong>
-                                    <span>
-                                        {new Date(comment.createdAt).toLocaleString()}
-                                    </span>
+                                    <div className="comment-left">
+                                        <strong>{comment.writer}</strong>
+                                    </div>
+                                    <div className="comment-right">
+                                        <span>
+                                            {new Date(comment.createdAt).toLocaleString()}
+                                        </span>
+                                    </div>
                                 </div>
-                                <p>{comment.content}</p>
+                                <div className="comment-body">
+                                    
+                                    <p className="comment-content">
+                                        {comment.content}
+                                    </p>
+
+                                    {member && member.id === comment.writerId && (
+                                        <button
+                                            className="comment-menu-button"
+                                            onClick={() => setOpenMenu(
+                                                openMenu === comment.no ? null : comment.no
+                                            )}
+                                        >
+                                            ⋮
+                                        </button>
+                                    )}
+                                    {openMenu === comment.no && (
+                                        <div className="comment-dropdown">
+                                            <button type="button">
+                                                수정
+                                            </button>
+                                            <button
+                                                type="button"
+                                                className="delete-menu-item"
+                                                onClick={() => handleDeleteComment(comment.no)}
+                                            >
+                                                삭제
+                                            </button>
+                                        </div>
+                                    )}
+                                </div>
                             </div>
                         )
                     })

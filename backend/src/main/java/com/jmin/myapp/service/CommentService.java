@@ -7,6 +7,7 @@ import com.jmin.myapp.entity.Member;
 import com.jmin.myapp.repository.CommentRepository;
 import com.jmin.myapp.repository.MemberRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -54,5 +55,15 @@ public class CommentService {
         }
 
         return response;
+    }
+
+    public void delete(Long commentNo, Member member) {
+        Comment comment = commentRepository.findById(commentNo).orElseThrow();
+
+        if (!comment.getWriter().equals(member.getId())) {
+            throw new RuntimeException("삭제 권한이 없습니다.");
+        }
+
+        commentRepository.delete(comment);
     }
 }

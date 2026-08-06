@@ -23,6 +23,7 @@ public class CommentController {
         return commentService.commentList(boardNo);
     }
 
+    // 댓글 등록
     @PostMapping("/{boardNo}/comments")
     public ResponseEntity<?> write(
             @PathVariable Long boardNo,
@@ -38,6 +39,26 @@ public class CommentController {
         commentService.write(boardNo, request, member);
 
         return ResponseEntity.ok().build();
+    }
+
+    // 댓글 삭제
+    @DeleteMapping("/{commentNo}")
+    public ResponseEntity<?> delete (
+            @PathVariable Long commentNo,
+            HttpSession session
+    ) {
+        Member member = (Member) session.getAttribute("loginMember");
+
+        if (member == null) {
+            return ResponseEntity.status(401).body("로그인이 필요합니다.");
+        }
+
+        try {
+            commentService.delete(commentNo, member);
+            return ResponseEntity.ok("삭제 완료");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
 
