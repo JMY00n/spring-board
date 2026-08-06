@@ -6,7 +6,10 @@ function CommentSection({ boardNo, member }) {
     const [comments, setComments] = useState([]);
     // 댓글 작성
     const [commentContent, setCommentContent] = useState("");
+    // 댓글 수정, 삭제 드랍다운
     const [openMenu, setOpenMenu] = useState(null);
+    const [editingNo, setEditingNo] = useState(null); // 지금 수정 중인 댓글 번호
+    const [editContent, setEditContent] = useState(""); // 수정 중인 내용
 
     useEffect(() => {
         loadComments();
@@ -75,6 +78,13 @@ function CommentSection({ boardNo, member }) {
         }
     }
 
+    // 댓글수정
+    const handleEditClick = (comment) => {
+        setEditingNo(comment.no);
+        setEditContent(comment.content);
+        setOpenMenu(null);
+    };
+
     return (
         <section className="comment-section">
             <div className="comment-title-row">
@@ -120,9 +130,27 @@ function CommentSection({ boardNo, member }) {
                                     </div>
                                 </div>
                                 <div className="comment-body">
-                                    <p className="comment-content">
-                                        {comment.content}
-                                    </p>
+                                    {editingNo === comment.no ? (
+                                        <div className="comment-edit-wrapper">
+                                            <textarea
+                                                className="comment-edit-textarea"
+                                                value={editContent}
+                                                onChange={(e) => setEditContent(e.target.value)}
+                                            />
+                                            <div className="comment-edit-btn">
+                                                <button type="button">
+                                                    저장
+                                                </button>
+                                                <button type="button" onClick={() => setEditingNo(null)}>
+                                                    취소
+                                                </button>
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <p className="comment-content">
+                                            {comment.content}
+                                        </p>
+                                    )}
 
                                     {member && member.id === comment.writerId && (
                                         <div className="comment-menu-wrapper">
@@ -136,7 +164,7 @@ function CommentSection({ boardNo, member }) {
                                             </button>
                                             {openMenu === comment.no && (
                                                 <div className="comment-dropdown">
-                                                    <button type="button">수정</button>
+                                                    <button type="button" onClick={() => handleEditClick(comment)}>수정</button>
                                                     <button type="button" className="delete-menu-item" onClick={() => handleDeleteComment(comment.no)}>삭제</button>
                                                 </div>
                                             )}

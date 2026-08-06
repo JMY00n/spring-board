@@ -22,7 +22,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BoardController {
     private final BoardService boardService;
-    private final CommentRepository commentRepository;
 
     @PostMapping("/write")
     public ResponseEntity<?> write(@RequestBody BoardWriteRequest request, HttpSession session) {
