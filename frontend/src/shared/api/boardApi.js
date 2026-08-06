@@ -36,3 +36,7 @@ export const writeComment = (boardNo, data) => {
 export const deleteComment = (commentNo) => {
     return apiClient.delete(`/board/${commentNo}/comments`);
 }
+
+export const updateComment = (commentNo, data) => {
+    return apiClient.put(`/board/${commentNo}/comments`, data);
+}

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getCommentList, writeComment, deleteComment } from "../shared/api/boardApi";
+import { getCommentList, writeComment, deleteComment, updateComment } from "../shared/api/boardApi";
 
 function CommentSection({ boardNo, member }) {
     // 불러오는 댓글 리스트
@@ -85,6 +85,30 @@ function CommentSection({ boardNo, member }) {
         setOpenMenu(null);
     };
 
+    const handleEditSubmit = async (commentNo) => {
+        if (!editContent.trim()) {
+            alert("댓글 내용을 입력해주세요.");
+            return;
+        }
+
+        try {
+            await updateComment(commentNo, {
+                content: editContent
+            });
+
+            setEditingNo(null);
+            await loadComments();
+        } catch (e) {
+            if (e.response?.status === 401) {
+                alert("작성자만 수정이 가능합니다.");
+                return;
+            }
+            
+            console.log(e);
+            alert("댓글 수정에 실패했습니다.");
+        }
+    };
+
     return (
         <section className="comment-section">
             <div className="comment-title-row">
@@ -138,7 +162,7 @@ function CommentSection({ boardNo, member }) {
                                                 onChange={(e) => setEditContent(e.target.value)}
                                             />
                                             <div className="comment-edit-btn">
-                                                <button type="button">
+                                                <button type="button" onClick={() => handleEditSubmit(comment.no)}>
                                                     저장
                                                 </button>
                                                 <button type="button" onClick={() => setEditingNo(null)}>

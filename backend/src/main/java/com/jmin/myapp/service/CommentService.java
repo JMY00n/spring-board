@@ -1,15 +1,18 @@
 package com.jmin.myapp.service;
 
 import com.jmin.myapp.dto.CommentResponse;
+import com.jmin.myapp.dto.CommentUpdateRequest;
 import com.jmin.myapp.dto.CommentWriteRequest;
 import com.jmin.myapp.entity.Comment;
 import com.jmin.myapp.entity.Member;
 import com.jmin.myapp.repository.CommentRepository;
 import com.jmin.myapp.repository.MemberRepository;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.AccessDeniedException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -65,5 +68,17 @@ public class CommentService {
         }
 
         commentRepository.delete(comment);
+    }
+
+    @Transactional
+    public void update(Long commentNo, CommentUpdateRequest request, Member member) throws AccessDeniedException {
+        Comment comment = commentRepository.findById(commentNo)
+                .orElseThrow(() -> new IllegalArgumentException("댓글이 없습니다."));
+
+        if (!comment.getWriter().equals(member.getId())) {
+            throw new AccessDeniedException("작성자만 수정할 수 있습니다.");
+        }
+
+        comment.setContent(request.getContent());
     }
 }

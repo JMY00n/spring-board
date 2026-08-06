@@ -1,6 +1,7 @@
 package com.jmin.myapp.controller;
 
 import com.jmin.myapp.dto.CommentResponse;
+import com.jmin.myapp.dto.CommentUpdateRequest;
 import com.jmin.myapp.dto.CommentWriteRequest;
 import com.jmin.myapp.entity.Member;
 import com.jmin.myapp.service.CommentService;
@@ -9,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 @RestController
@@ -61,5 +63,24 @@ public class CommentController {
         }
     }
 
+    // 댓글 수정
+    @PutMapping("/{commentNo}/comments")
+    public ResponseEntity<?> update(
+            @PathVariable Long commentNo,
+            @RequestBody CommentUpdateRequest request,
+            HttpSession session
+    ) {
+        Member member = (Member) session.getAttribute("loginMember");
 
+        if (member == null) {
+            return ResponseEntity.status(401).body("로그인이 필요합니다.");
+        }
+
+        try {
+            commentService.update(commentNo, request, member);
+            return ResponseEntity.ok("수정 완료");
+        } catch (AccessDeniedException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }
