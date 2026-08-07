@@ -69,6 +69,7 @@ function CommentSection({ boardNo, member }) {
     const handleDeleteComment = async (commentNo) => {
         try {
             await deleteComment(commentNo);
+            alert("댓글 삭제 완료");
             await loadComments();
         } catch (e) {
             if (e.response?.status === 401) {
@@ -97,13 +98,14 @@ function CommentSection({ boardNo, member }) {
             });
 
             setEditingNo(null);
+            alert("댓글 수정 완료");
             await loadComments();
         } catch (e) {
             if (e.response?.status === 401) {
                 alert("작성자만 수정이 가능합니다.");
                 return;
             }
-            
+
             console.log(e);
             alert("댓글 수정에 실패했습니다.");
         }
