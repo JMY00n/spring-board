@@ -29,7 +29,7 @@ function BoardDetailPage() {
 
         fetchBoard();
     }, [no]);
-
+ㅈ
     // 게시글 삭제
     const handleDelete = async () => {
         if (!window.confirm("삭제하시겠습니까?")) {
@@ -39,8 +39,13 @@ function BoardDetailPage() {
         try{
             await deleteBoard(board.no);
             alert("삭제되었습니다.");
+            navigate("/");
         } catch (e) {
             if (e.response?.status === 401) {
+                alert("로그인이 필요한 서비스입니다.");
+                return;
+            }
+            if (e.response?status === 403) {
                 alert("작성자만 삭제가 가능합니다.");
                 return;
             }

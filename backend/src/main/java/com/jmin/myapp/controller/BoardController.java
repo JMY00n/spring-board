@@ -55,12 +55,16 @@ public class BoardController {
         Member member = (Member) session.getAttribute("loginMember");
 
         if (member == null) {
-            return ResponseEntity.badRequest().body("로그인하세요.");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요한 서비스입니다.");
         }
 
-        boardService.delete(no, member);
+        try {
+            boardService.delete(no, member);
+            return ResponseEntity.ok("삭제 완료");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+        }
 
-        return ResponseEntity.ok("삭제 완료");
     }
 
     @PutMapping("/{no}")
