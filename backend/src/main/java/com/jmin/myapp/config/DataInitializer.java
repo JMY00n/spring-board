@@ -1,12 +1,12 @@
 package com.jmin.myapp.config;
 
-import com.jmin.myapp.entity.Board;
-import com.jmin.myapp.repository.BoardRepository;
-import lombok.AllArgsConstructor;
+import java.time.LocalDateTime;
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
+import com.jmin.myapp.entity.Board;
+import com.jmin.myapp.repository.BoardRepository;
 
 @Component
 public class DataInitializer implements CommandLineRunner {
